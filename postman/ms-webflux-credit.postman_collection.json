@@ -151,6 +151,28 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "properties",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8084/api/v1/credit/properties",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"v1",
+						"credit",
+						"properties"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

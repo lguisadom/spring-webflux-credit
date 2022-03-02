@@ -8,6 +8,12 @@ import lombok.Data;
 @Data
 @Configuration
 public class AppConfig {
+	@Value("${server.port}")
+	private String port;
+	
 	@Value("${spring.data.mongodb.authentication-database}")
 	private String mongoAuthenticationDatabase;
+	
+	@Value("${application.config.description}")
+	private String profileDescription;
 }

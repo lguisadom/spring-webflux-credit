@@ -29,9 +29,13 @@ public class CreditController {
 	@Autowired
 	private AppConfig appConfig;
 	
-	@GetMapping("/properties")
+	@GetMapping(value= "/properties", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
 	private String getProperties() {
-		return "db mongo: " + appConfig.getMongoAuthenticationDatabase();
+		return String.format("ServerPort: %s\nProfile Description: %s\nMondo db: %s\n",
+				appConfig.getPort(),
+				appConfig.getProfileDescription(),
+				appConfig.getMongoAuthenticationDatabase());
 	}
 	
 	@PostMapping

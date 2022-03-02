@@ -12,4 +12,8 @@ spring:
     mongodb:
       authentication-database: creditdb
       host: localhost
-      port: 27017
+  cloud:
+    config:
+      profile: dev #(3) dev, qa, prod
+  config:
+    import: optional:configserver:http://localhost:8086 #(4)
