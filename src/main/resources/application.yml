@@ -1,17 +1,9 @@
-server:
-  port: 8084
-  
 spring:
   application:
     name: service-credit #(1)
   profiles:
     active:
     - dev #(2)
-#MONGO
-  data:
-    mongodb:
-      authentication-database: creditdb
-      host: localhost
   cloud:
     config:
       profile: dev #(3) dev, qa, prod
