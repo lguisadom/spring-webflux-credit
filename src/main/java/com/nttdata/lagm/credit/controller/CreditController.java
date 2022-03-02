@@ -35,7 +35,7 @@ public class CreditController {
 		return String.format("ServerPort: %s\nProfile Description: %s\nMondo db: %s\n",
 				appConfig.getPort(),
 				appConfig.getProfileDescription(),
-				appConfig.getMongoAuthenticationDatabase());
+				appConfig.getMongoDatabase());
 	}
 	
 	@PostMapping

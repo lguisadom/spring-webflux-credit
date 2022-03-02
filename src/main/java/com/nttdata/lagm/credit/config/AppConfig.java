@@ -11,8 +11,8 @@ public class AppConfig {
 	@Value("${server.port}")
 	private String port;
 	
-	@Value("${spring.data.mongodb.authentication-database}")
-	private String mongoAuthenticationDatabase;
+	@Value("${spring.data.mongodb.database}")
+	private String mongoDatabase;
 	
 	@Value("${application.config.description}")
 	private String profileDescription;
