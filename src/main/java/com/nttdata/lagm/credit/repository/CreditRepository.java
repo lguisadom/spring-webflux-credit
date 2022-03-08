@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.nttdata.lagm.credit.model.Credit;
 
+import reactor.core.publisher.Mono;
+
 @Repository
 public interface CreditRepository extends ReactiveMongoRepository<Credit, Long> {
-
+	Mono<Credit> findByAccountNumber(String accountNumber);
 }

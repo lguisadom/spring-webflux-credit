@@ -8,4 +8,5 @@ public abstract class BankProduct {
 	private String accountNumber;
 	private String cci;
 	private Long customerId;
+	private Double amount;
 }

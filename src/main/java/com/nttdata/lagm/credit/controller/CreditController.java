@@ -1,5 +1,7 @@
 package com.nttdata.lagm.credit.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +25,9 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v1/credit")
 public class CreditController {
+	
+	private Logger LOGGER = LoggerFactory.getLogger(CreditController.class);
+	
 	@Autowired
 	private CreditService creditService;
 	
@@ -66,5 +71,19 @@ public class CreditController {
 	@ResponseStatus(HttpStatus.OK)
 	private Mono<Void> delete(@PathVariable("id") Long id) {
 		return creditService.delete(id);
+	}
+	
+	@PutMapping("/update/{id}/amount/{amount}")
+	@ResponseStatus(HttpStatus.OK)
+	private Mono<Credit> updateAmount(@PathVariable Long id, @PathVariable Double amount) {
+		LOGGER.info("UpdateAmount: " + id + ", amount: " + amount);
+		return creditService.updateAmount(id, amount);
+	}
+	
+	@GetMapping("accountNumber/{accountNumber}")
+	@ResponseStatus(HttpStatus.OK)
+	private Mono<Credit> findByAccountNumber(@PathVariable String accountNumber) {
+		LOGGER.info("FindByAccountNumber: " + accountNumber);
+		return creditService.findByAccountNumber(accountNumber);
 	}
 }

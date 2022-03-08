@@ -33,7 +33,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 1,\r\n    \"accountNumber\": \"123457\",\r\n    \"cci\": \"0000000000000024\",\r\n    \"customerId\": 1,\r\n    \"creditLimit\": \"1500\"\r\n}",
+					"raw": "{\r\n    \"id\": 7,\r\n    \"accountNumber\": \"123457\",\r\n    \"cci\": \"0000000000000024\",\r\n    \"customerId\": 3,\r\n    \"amount\": \"0\",\r\n    \"creditLimit\": \"1500\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -101,6 +101,29 @@
 			"response": []
 		},
 		{
+			"name": "findByAccountNumber",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8084/api/v1/credit/accountNumber/0000000004",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"v1",
+						"credit",
+						"accountNumber",
+						"0000000004"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "update",
 			"request": {
 				"method": "PUT",
@@ -125,6 +148,40 @@
 						"api",
 						"v1",
 						"credit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateAmount",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/api/v1/credit/update/1/amount/-5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"v1",
+						"credit",
+						"update",
+						"1",
+						"amount",
+						"-5"
 					]
 				}
 			},

@@ -12,4 +12,6 @@ public interface CreditService {
 	Mono<Credit> findById(Long id);
 	Mono<Credit> update(Credit credit);
 	Mono<Void> delete(Long id);
+	public Mono<Credit> findByAccountNumber(String accountNumber);
+	public Mono<Credit> updateAmount(Long id, Double amount);
 }

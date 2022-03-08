@@ -1,5 +1,7 @@
 package com.nttdata.lagm.credit.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class CreditServiceImpl implements CreditService {
+
+	private Logger LOGGER = LoggerFactory.getLogger(CreditServiceImpl.class);
 	
 	@Autowired
 	private CustomerProxy customerProxy;
@@ -24,6 +28,7 @@ public class CreditServiceImpl implements CreditService {
 	public Mono<Credit> create(Credit credit) {
 		return checkCustomerExist(credit.getCustomerId())
 				.mergeWith(checkCreditNotExists(credit.getId()))
+				.mergeWith(checkAccountNumberNotExists(credit.getAccountNumber()))
 				.mergeWith(checkBusinessRuleForCredit(credit.getCustomerId()))
 				.then(creditRepository.save(credit));
 	}
@@ -63,6 +68,14 @@ public class CreditServiceImpl implements CreditService {
 				.then();
 	}
 	
+	private Mono<Void> checkAccountNumberNotExists(String accountNumber) {
+		return creditRepository.findByAccountNumber(accountNumber)
+				.flatMap(bankAccount -> {
+					return Mono.error(new Exception("Crédito con número de cuenta: " + accountNumber + " ya existe"));
+				})
+				.then();
+	}
+	
 	private Mono<Void> checkBusinessRuleForCredit(Long customerId) {
 		return this.customerProxy.findById(customerId)
 				.flatMap(customer -> {
@@ -84,5 +97,23 @@ public class CreditServiceImpl implements CreditService {
 	private Flux<Credit> findAllCreditsByCustomerId(Long customerId) {
 		return creditRepository.findAll().filter(
 				credit -> credit.getCustomerId() == customerId);
+	}
+
+	@Override
+	public Mono<Credit> findByAccountNumber(String accountNumber) {
+		return creditRepository.findByAccountNumber(accountNumber);
+	}
+	
+	@Override
+	public Mono<Credit> updateAmount(Long id, Double amount) {
+		return creditRepository.findById(id)
+				.switchIfEmpty(Mono.error(new Exception("Crédito con id: " + id + " no existe")))
+				.flatMap(credit -> {
+					Double currentAmount = credit.getAmount();
+					Double finalAmount = currentAmount + amount;
+					credit.setAmount(finalAmount);
+					LOGGER.info("current " + currentAmount + " -> final: " + finalAmount);
+					return creditRepository.save(credit);
+				});
 	}
 }
