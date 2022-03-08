@@ -40,8 +40,8 @@ public class CreditController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	private void create(@RequestBody Credit credit) {
-		creditService.create(credit);
+	private Mono<Credit> create(@RequestBody Credit credit) {
+		return creditService.create(credit);
 	}
 	
 	@GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)

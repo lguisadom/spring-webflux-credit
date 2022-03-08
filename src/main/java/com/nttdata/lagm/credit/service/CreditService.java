@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 
 public interface CreditService {
 
-	void create(Credit credit);
+	Mono<Credit> create(Credit credit);
 	Flux<Credit> findAll();
 	Mono<Credit> findById(Long id);
 	Mono<Credit> update(Credit credit);
