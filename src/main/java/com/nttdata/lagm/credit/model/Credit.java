@@ -16,11 +16,7 @@ import lombok.Setter;
 @Setter
 @Builder
 @Document(collection = "credit")
-public class Credit {
-	private Long id;
-	private String accountNumber;
-	private String cci;
-	private Long customerId;
+public class Credit extends BankProduct {
 	private Double creditLimit;
 }
 
