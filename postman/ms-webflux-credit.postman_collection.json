@@ -33,7 +33,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 7,\r\n    \"accountNumber\": \"123457\",\r\n    \"cci\": \"0000000000000024\",\r\n    \"customerId\": 3,\r\n    \"amount\": \"0\",\r\n    \"creditLimit\": \"1500\"\r\n}",
+					"raw": "{\r\n    \"id\": 8,\r\n    \"accountNumber\": \"1111111111\",\r\n    \"cci\": \"0000000000000024\",\r\n    \"customerId\": 8,\r\n    \"amount\": \"0\",\r\n    \"creditLimit\": \"1500\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -84,7 +84,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8084/api/v1/credit/1",
+					"raw": "http://localhost:8084/api/v1/credit/8",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -94,7 +94,7 @@
 						"api",
 						"v1",
 						"credit",
-						"1"
+						"8"
 					]
 				}
 			},
@@ -226,6 +226,29 @@
 						"v1",
 						"credit",
 						"properties"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "availableBalance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8084/api/v1/credit/balance/0000000001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"v1",
+						"credit",
+						"balance",
+						"0000000001"
 					]
 				}
 			},

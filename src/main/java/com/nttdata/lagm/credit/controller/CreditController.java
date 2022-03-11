@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nttdata.lagm.credit.config.AppConfig;
+import com.nttdata.lagm.credit.dto.response.AvailableBalanceResponseDto;
 import com.nttdata.lagm.credit.model.Credit;
 import com.nttdata.lagm.credit.service.CreditService;
 
@@ -85,5 +86,12 @@ public class CreditController {
 	private Mono<Credit> findByAccountNumber(@PathVariable String accountNumber) {
 		LOGGER.info("FindByAccountNumber: " + accountNumber);
 		return creditService.findByAccountNumber(accountNumber);
+	}
+	
+	@GetMapping("/balance/{accountNumber}")
+	@ResponseStatus(HttpStatus.OK)
+	private Mono<AvailableBalanceResponseDto> getAvailableBalance(@PathVariable("accountNumber") String accountNumber) {
+		LOGGER.info("GetAvailableBalance: " + accountNumber);
+		return creditService.getAvailableBalance(accountNumber);
 	}
 }

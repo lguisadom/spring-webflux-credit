@@ -1,5 +1,6 @@
 package com.nttdata.lagm.credit.service;
 
+import com.nttdata.lagm.credit.dto.response.AvailableBalanceResponseDto;
 import com.nttdata.lagm.credit.model.Credit;
 
 import reactor.core.publisher.Flux;
@@ -14,4 +15,5 @@ public interface CreditService {
 	Mono<Void> delete(Long id);
 	public Mono<Credit> findByAccountNumber(String accountNumber);
 	public Mono<Credit> updateAmount(Long id, Double amount);
+	public Mono<AvailableBalanceResponseDto> getAvailableBalance(String accountNumber);
 }

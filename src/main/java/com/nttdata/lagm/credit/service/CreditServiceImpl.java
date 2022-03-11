@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nttdata.lagm.credit.dto.response.AvailableBalanceResponseDto;
 import com.nttdata.lagm.credit.model.Credit;
 import com.nttdata.lagm.credit.proxy.CustomerProxy;
 import com.nttdata.lagm.credit.repository.CreditRepository;
@@ -115,5 +116,19 @@ public class CreditServiceImpl implements CreditService {
 					LOGGER.info("current " + currentAmount + " -> final: " + finalAmount);
 					return creditRepository.save(credit);
 				});
+	}
+
+	private Mono<Void> checkAccountNumberExists(String accountNumber) {
+		return creditRepository.findByAccountNumber(accountNumber)
+				.switchIfEmpty(Mono.error(new Exception("Crédito con número de cuenta: " + accountNumber + " no existe")))
+				.then();
+	}
+	
+	@Override
+	public Mono<AvailableBalanceResponseDto> getAvailableBalance(String accountNumber) {
+		return checkAccountNumberExists(accountNumber)
+				.then(creditRepository.findByAccountNumber(accountNumber).map(credit -> {
+					return new AvailableBalanceResponseDto(credit.getAccountNumber(), credit.getAmount().toString());
+				}));
 	}
 }
