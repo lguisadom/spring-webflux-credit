@@ -1,5 +1,7 @@
 package com.nttdata.lagm.credit.service;
 
+import java.math.BigDecimal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,13 +108,14 @@ public class CreditServiceImpl implements CreditService {
 	}
 	
 	@Override
-	public Mono<Credit> updateAmount(Long id, Double amount) {
+	public Mono<Credit> updateAmount(Long id, String strAmount) {
 		return creditRepository.findById(id)
 				.switchIfEmpty(Mono.error(new Exception("Crédito con id: " + id + " no existe")))
 				.flatMap(credit -> {
-					Double currentAmount = credit.getAmount();
-					Double finalAmount = currentAmount + amount;
-					credit.setAmount(finalAmount);
+					BigDecimal currentAmount = new BigDecimal(credit.getAmount());
+					BigDecimal amount = new BigDecimal(strAmount);
+					BigDecimal finalAmount = currentAmount.add(amount);
+					credit.setAmount(finalAmount.toString());
 					LOGGER.info("current " + currentAmount + " -> final: " + finalAmount);
 					return creditRepository.save(credit);
 				});

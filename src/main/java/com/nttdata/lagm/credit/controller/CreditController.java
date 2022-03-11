@@ -76,7 +76,7 @@ public class CreditController {
 	
 	@PutMapping("/update/{id}/amount/{amount}")
 	@ResponseStatus(HttpStatus.OK)
-	private Mono<Credit> updateAmount(@PathVariable Long id, @PathVariable Double amount) {
+	private Mono<Credit> updateAmount(@PathVariable Long id, @PathVariable String amount) {
 		LOGGER.info("UpdateAmount: " + id + ", amount: " + amount);
 		return creditService.updateAmount(id, amount);
 	}
