@@ -30,7 +30,6 @@ public class CreditServiceImpl implements CreditService {
 	@Override
 	public Mono<Credit> create(Credit credit) {
 		return checkCustomerExist(credit.getCustomerId())
-				.mergeWith(checkCreditNotExists(credit.getId()))
 				.mergeWith(checkAccountNumberNotExists(credit.getAccountNumber()))
 				.mergeWith(checkBusinessRuleForCredit(credit.getCustomerId()))
 				.then(creditRepository.save(credit));
@@ -42,18 +41,17 @@ public class CreditServiceImpl implements CreditService {
 	}
 
 	@Override
-	public Mono<Credit> findById(Long id) {
+	public Mono<Credit> findById(String id) {
 		return creditRepository.findById(id);
 	}
 
 	@Override
-	public Mono<Credit> update(Credit credit) {
-		return creditRepository.save(credit);
-	}
-
-	@Override
-	public Mono<Void> delete(Long id) {
-		return creditRepository.deleteById(id);
+	public Mono<Credit> delete(String id) {
+		return creditRepository.findById(id)
+				.flatMap(credit -> {
+					credit.setStatus(false);
+					return creditRepository.save(credit);
+				});
 	}
 
 	private Mono<Void> checkCustomerExist(Long id) {
@@ -61,14 +59,6 @@ public class CreditServiceImpl implements CreditService {
 				.switchIfEmpty(Mono.error(new Exception("No existe cliente con id: " + id)))
 				.then();
 
-	}
-	
-	private Mono<Void> checkCreditNotExists(Long id) {
-		return creditRepository.findById(id)
-				.flatMap(bankAccount -> {
-					return Mono.error(new Exception("Crédito con con id: " + id + " ya existe"));
-				})
-				.then();
 	}
 	
 	private Mono<Void> checkAccountNumberNotExists(String accountNumber) {
@@ -108,7 +98,7 @@ public class CreditServiceImpl implements CreditService {
 	}
 	
 	@Override
-	public Mono<Credit> updateAmount(Long id, String strAmount) {
+	public Mono<Credit> updateAmount(String id, String strAmount) {
 		return creditRepository.findById(id)
 				.switchIfEmpty(Mono.error(new Exception("Crédito con id: " + id + " no existe")))
 				.flatMap(credit -> {

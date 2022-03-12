@@ -33,7 +33,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 8,\r\n    \"accountNumber\": \"1111111111\",\r\n    \"cci\": \"0000000000000024\",\r\n    \"customerId\": 8,\r\n    \"amount\": \"0\",\r\n    \"creditLimit\": \"1500\"\r\n}",
+					"raw": "{\r\n    \"accountNumber\": \"29135813408051\",\r\n    \"cci\": \"20219113581340805852\",\r\n    \"customerId\": 2,\r\n    \"amount\": \"0\",\r\n    \"creditLimit\": \"1500\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -51,159 +51,6 @@
 						"api",
 						"v1",
 						"credit"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "propeties",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8084/api/v1/credit/properties",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8084",
-					"path": [
-						"api",
-						"v1",
-						"credit",
-						"properties"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "findById",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8084/api/v1/credit/8",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8084",
-					"path": [
-						"api",
-						"v1",
-						"credit",
-						"8"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "findByAccountNumber",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8084/api/v1/credit/accountNumber/0000000004",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8084",
-					"path": [
-						"api",
-						"v1",
-						"credit",
-						"accountNumber",
-						"0000000004"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "update",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"id\": 1,\r\n    \"accountNumber\": \"123457\",\r\n    \"cci\": \"0000000000000024\",\r\n    \"customerId\": 1,\r\n    \"creditLimit\": \"1800\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8084/api/v1/credit",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8084",
-					"path": [
-						"api",
-						"v1",
-						"credit"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "updateAmount",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8084/api/v1/credit/update/1/amount/-5",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8084",
-					"path": [
-						"api",
-						"v1",
-						"credit",
-						"update",
-						"1",
-						"amount",
-						"-5"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "delete",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8084/api/v1/credit/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8084",
-					"path": [
-						"api",
-						"v1",
-						"credit",
-						"1"
 					]
 				}
 			},
@@ -232,12 +79,113 @@
 			"response": []
 		},
 		{
+			"name": "findById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8084/api/v1/credit/622c2b6682c60b09244e3f87",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"v1",
+						"credit",
+						"622c2b6682c60b09244e3f87"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findByAccountNumber",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8084/api/v1/credit/accountNumber/29135813408051",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"v1",
+						"credit",
+						"accountNumber",
+						"29135813408051"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateAmount",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/api/v1/credit/update/622c2b6682c60b09244e3f87/amount/-5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"v1",
+						"credit",
+						"update",
+						"622c2b6682c60b09244e3f87",
+						"amount",
+						"-5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8084/api/v1/credit/622c2b6682c60b09244e3f87",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"v1",
+						"credit",
+						"622c2b6682c60b09244e3f87"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "availableBalance",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8084/api/v1/credit/balance/0000000001",
+					"raw": "http://localhost:8084/api/v1/credit/balance/29135813408052",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -248,7 +196,7 @@
 						"v1",
 						"credit",
 						"balance",
-						"0000000001"
+						"29135813408052"
 					]
 				}
 			},

@@ -10,10 +10,9 @@ public interface CreditService {
 
 	Mono<Credit> create(Credit credit);
 	Flux<Credit> findAll();
-	Mono<Credit> findById(Long id);
-	Mono<Credit> update(Credit credit);
-	Mono<Void> delete(Long id);
+	Mono<Credit> findById(String id);
+	Mono<Credit> delete(String id);
 	public Mono<Credit> findByAccountNumber(String accountNumber);
-	public Mono<Credit> updateAmount(Long id, String amount);
+	public Mono<Credit> updateAmount(String id, String amount);
 	public Mono<AvailableBalanceResponseDto> getAvailableBalance(String accountNumber);
 }

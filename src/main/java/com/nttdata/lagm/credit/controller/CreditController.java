@@ -58,25 +58,19 @@ public class CreditController {
 	
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	private Mono<Credit> findById(@PathVariable("id") Long id) {
+	private Mono<Credit> findById(@PathVariable("id") String id) {
 		return creditService.findById(id);
-	}
-	
-	@PutMapping
-	@ResponseStatus(HttpStatus.OK)
-	private Mono<Credit> update(@RequestBody Credit credit) {
-		return creditService.update(credit);
 	}
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	private Mono<Void> delete(@PathVariable("id") Long id) {
+	private Mono<Credit> delete(@PathVariable("id") String id) {
 		return creditService.delete(id);
 	}
 	
 	@PutMapping("/update/{id}/amount/{amount}")
 	@ResponseStatus(HttpStatus.OK)
-	private Mono<Credit> updateAmount(@PathVariable Long id, @PathVariable String amount) {
+	private Mono<Credit> updateAmount(@PathVariable String id, @PathVariable String amount) {
 		LOGGER.info("UpdateAmount: " + id + ", amount: " + amount);
 		return creditService.updateAmount(id, amount);
 	}

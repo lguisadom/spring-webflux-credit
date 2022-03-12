@@ -8,6 +8,6 @@ import com.nttdata.lagm.credit.model.Credit;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface CreditRepository extends ReactiveMongoRepository<Credit, Long> {
+public interface CreditRepository extends ReactiveMongoRepository<Credit, String> {
 	Mono<Credit> findByAccountNumber(String accountNumber);
 }
