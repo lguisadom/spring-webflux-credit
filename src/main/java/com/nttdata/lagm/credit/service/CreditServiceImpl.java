@@ -54,9 +54,9 @@ public class CreditServiceImpl implements CreditService {
 				});
 	}
 
-	private Mono<Void> checkCustomerExist(Long id) {
-		return customerProxy.findById(id)
-				.switchIfEmpty(Mono.error(new Exception("No existe cliente con id: " + id)))
+	private Mono<Void> checkCustomerExist(String customerId) {
+		return customerProxy.findById(customerId)
+				.switchIfEmpty(Mono.error(new Exception("No existe cliente con id: " + customerId)))
 				.then();
 
 	}
@@ -69,7 +69,7 @@ public class CreditServiceImpl implements CreditService {
 				.then();
 	}
 	
-	private Mono<Void> checkBusinessRuleForCredit(Long customerId) {
+	private Mono<Void> checkBusinessRuleForCredit(String customerId) {
 		return this.customerProxy.findById(customerId)
 				.flatMap(customer -> {
 					if (Constants.PERSONAL_CUSTOMER == customer.getCustomerTypeId()) {
@@ -87,9 +87,9 @@ public class CreditServiceImpl implements CreditService {
 				});
 	}
 	
-	private Flux<Credit> findAllCreditsByCustomerId(Long customerId) {
+	private Flux<Credit> findAllCreditsByCustomerId(String customerId) {
 		return creditRepository.findAll().filter(
-				credit -> credit.getCustomerId() == customerId);
+				credit -> credit.getCustomerId().equals(customerId));
 	}
 
 	@Override

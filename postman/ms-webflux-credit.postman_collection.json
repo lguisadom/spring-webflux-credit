@@ -33,7 +33,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountNumber\": \"29135813408051\",\r\n    \"cci\": \"20219113581340805852\",\r\n    \"customerId\": 2,\r\n    \"amount\": \"0\",\r\n    \"creditLimit\": \"1500\"\r\n}",
+					"raw": "{\r\n    \"accountNumber\": \"29135813408052\",\r\n    \"cci\": \"20219113581340805853\",\r\n    \"customerId\": \"622c3f8bb83e31010a15c839\",\r\n    \"amount\": \"0\",\r\n    \"creditLimit\": \"1500\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -84,7 +84,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8084/api/v1/credit/622c2b6682c60b09244e3f87",
+					"raw": "http://localhost:8084/api/v1/credit/622e939b5238917ed5b3d593",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -94,7 +94,7 @@
 						"api",
 						"v1",
 						"credit",
-						"622c2b6682c60b09244e3f87"
+						"622e939b5238917ed5b3d593"
 					]
 				}
 			},
@@ -138,7 +138,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8084/api/v1/credit/update/622c2b6682c60b09244e3f87/amount/-5",
+					"raw": "http://localhost:8084/api/v1/credit/update/622e939b5238917ed5b3d593/amount/-5",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -149,7 +149,7 @@
 						"v1",
 						"credit",
 						"update",
-						"622c2b6682c60b09244e3f87",
+						"622e939b5238917ed5b3d593",
 						"amount",
 						"-5"
 					]
@@ -163,7 +163,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8084/api/v1/credit/622c2b6682c60b09244e3f87",
+					"raw": "http://localhost:8084/api/v1/credit/622e939b5238917ed5b3d593",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -173,7 +173,7 @@
 						"api",
 						"v1",
 						"credit",
-						"622c2b6682c60b09244e3f87"
+						"622e939b5238917ed5b3d593"
 					]
 				}
 			},
@@ -185,7 +185,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8084/api/v1/credit/balance/29135813408052",
+					"raw": "http://localhost:8084/api/v1/credit/balance/29135813408051",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -196,7 +196,7 @@
 						"v1",
 						"credit",
 						"balance",
-						"29135813408052"
+						"29135813408051"
 					]
 				}
 			},

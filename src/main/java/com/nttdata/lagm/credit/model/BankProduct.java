@@ -15,7 +15,7 @@ public abstract class BankProduct {
 	private ObjectId id;
 	private String accountNumber;
 	private String cci;
-	private Long customerId;
+	private String customerId;
 	private String amount;
 	private Boolean status = true;
 }
