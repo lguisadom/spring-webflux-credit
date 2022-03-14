@@ -7,11 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nttdata.lagm.credit.dto.request.CreditRequestDto;
 import com.nttdata.lagm.credit.dto.response.AvailableBalanceResponseDto;
 import com.nttdata.lagm.credit.model.Credit;
 import com.nttdata.lagm.credit.proxy.CustomerProxy;
 import com.nttdata.lagm.credit.repository.CreditRepository;
 import com.nttdata.lagm.credit.util.Constants;
+import com.nttdata.lagm.credit.util.Converter;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,10 +30,9 @@ public class CreditServiceImpl implements CreditService {
 	private CreditRepository creditRepository;
 
 	@Override
-	public Mono<Credit> create(Credit credit) {
-		return checkCustomerExist(credit.getCustomerId())
-				.mergeWith(checkAccountNumberNotExists(credit.getAccountNumber()))
-				.mergeWith(checkBusinessRuleForCredit(credit.getCustomerId()))
+	public Mono<Credit> create(CreditRequestDto creditRequestDto) {
+		Credit credit = Converter.convertoToCredit(creditRequestDto);
+		return checkConditions(credit)
 				.then(creditRepository.save(credit));
 	}
 
@@ -53,45 +54,7 @@ public class CreditServiceImpl implements CreditService {
 					return creditRepository.save(credit);
 				});
 	}
-
-	private Mono<Void> checkCustomerExist(String customerId) {
-		return customerProxy.findById(customerId)
-				.switchIfEmpty(Mono.error(new Exception("No existe cliente con id: " + customerId)))
-				.then();
-
-	}
 	
-	private Mono<Void> checkAccountNumberNotExists(String accountNumber) {
-		return creditRepository.findByAccountNumber(accountNumber)
-				.flatMap(bankAccount -> {
-					return Mono.error(new Exception("Crédito con número de cuenta: " + accountNumber + " ya existe"));
-				})
-				.then();
-	}
-	
-	private Mono<Void> checkBusinessRuleForCredit(String customerId) {
-		return this.customerProxy.findById(customerId)
-				.flatMap(customer -> {
-					if (Constants.PERSONAL_CUSTOMER == customer.getCustomerTypeId()) {
-						return this.findAllCreditsByCustomerId(customerId)
-								.flatMap(result -> {
-									return Mono.error(
-											new Exception("El cliente: " + result.getCustomerId() + " es de tipo " + 
-									Constants.PERSONAL_CUSTOMER + " y no puede tener más de un crédito"
-									));
-								})
-								.then();
-					} else {
-						return Mono.empty();
-					}
-				});
-	}
-	
-	private Flux<Credit> findAllCreditsByCustomerId(String customerId) {
-		return creditRepository.findAll().filter(
-				credit -> credit.getCustomerId().equals(customerId));
-	}
-
 	@Override
 	public Mono<Credit> findByAccountNumber(String accountNumber) {
 		return creditRepository.findByAccountNumber(accountNumber);
@@ -110,12 +73,6 @@ public class CreditServiceImpl implements CreditService {
 					return creditRepository.save(credit);
 				});
 	}
-
-	private Mono<Void> checkAccountNumberExists(String accountNumber) {
-		return creditRepository.findByAccountNumber(accountNumber)
-				.switchIfEmpty(Mono.error(new Exception("Crédito con número de cuenta: " + accountNumber + " no existe")))
-				.then();
-	}
 	
 	@Override
 	public Mono<AvailableBalanceResponseDto> getAvailableBalance(String accountNumber) {
@@ -123,5 +80,67 @@ public class CreditServiceImpl implements CreditService {
 				.then(creditRepository.findByAccountNumber(accountNumber).map(credit -> {
 					return new AvailableBalanceResponseDto(credit.getAccountNumber(), credit.getAmount().toString());
 				}));
+	}
+
+	@Override
+	public Flux<Credit> findByDni(String dni) {
+		return customerProxy.findByDni(dni)
+			.flatMapMany(customer -> {
+				return creditRepository.findAll().filter(credit -> credit.getCustomer().getId().equals(customer.getId()));
+			});
+	}
+
+	private Mono<Void> checkConditions(Credit credit) {
+		return checkCustomerExist(credit)
+				.mergeWith(checkAccountNumberNotExists(credit.getAccountNumber()))
+				.mergeWith(checkBusinessRuleForCredit(credit.getCustomer().getId()))
+				.then();
+	}
+
+	private Mono<Void> checkCustomerExist(Credit credit) {
+		String customerId = credit.getCustomer().getId();
+		return customerProxy.findById(credit.getCustomer().getId())
+				.switchIfEmpty(Mono.error(new Exception("No existe cliente con id: " + customerId)))
+				.flatMap(customer -> {
+					credit.setCustomer(customer);
+					return Mono.empty();
+				});
+	}
+	
+	private Mono<Void> checkAccountNumberNotExists(String accountNumber) {
+		return creditRepository.findByAccountNumber(accountNumber)
+				.flatMap(bankAccount -> {
+					return Mono.error(new Exception("Crédito con número de cuenta: " + accountNumber + " ya existe"));
+				})
+				.then();
+	}
+	
+	private Mono<Void> checkBusinessRuleForCredit(String customerId) {
+		return this.customerProxy.findById(customerId)
+				.flatMap(customer -> {
+					if (Constants.CUSTOMER_TYPE_PERSONAL == customer.getCustomerTypeId()) {
+						return this.findAllCreditsByCustomerId(customerId)
+								.flatMap(result -> {
+									return Mono.error(
+											new Exception("El cliente: " + result.getCustomer().getId() + " es de tipo " + 
+									Constants.CUSTOMER_TYPE_PERSONAL_DESCRIPTION + " y no puede tener más de un crédito"
+									));
+								})
+								.then();
+					} else {
+						return Mono.empty();
+					}
+				});
+	}
+	
+	private Flux<Credit> findAllCreditsByCustomerId(String customerId) {
+		return creditRepository.findAll().filter(
+				credit -> credit.getCustomer().getId().equals(customerId));
+	}
+
+	private Mono<Void> checkAccountNumberExists(String accountNumber) {
+		return creditRepository.findByAccountNumber(accountNumber)
+				.switchIfEmpty(Mono.error(new Exception("Crédito con número de cuenta: " + accountNumber + " no existe")))
+				.then();
 	}
 }

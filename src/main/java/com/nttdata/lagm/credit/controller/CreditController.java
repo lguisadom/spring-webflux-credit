@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nttdata.lagm.credit.config.AppConfig;
+import com.nttdata.lagm.credit.dto.request.CreditRequestDto;
 import com.nttdata.lagm.credit.dto.response.AvailableBalanceResponseDto;
 import com.nttdata.lagm.credit.model.Credit;
 import com.nttdata.lagm.credit.service.CreditService;
@@ -46,8 +47,8 @@ public class CreditController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	private Mono<Credit> create(@RequestBody Credit credit) {
-		return creditService.create(credit);
+	private Mono<Credit> create(@RequestBody CreditRequestDto creditRequestDto) {
+		return creditService.create(creditRequestDto);
 	}
 	
 	@GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -81,11 +82,18 @@ public class CreditController {
 		LOGGER.info("FindByAccountNumber: " + accountNumber);
 		return creditService.findByAccountNumber(accountNumber);
 	}
-	
+
 	@GetMapping("/balance/{accountNumber}")
 	@ResponseStatus(HttpStatus.OK)
 	private Mono<AvailableBalanceResponseDto> getAvailableBalance(@PathVariable("accountNumber") String accountNumber) {
 		LOGGER.info("GetAvailableBalance: " + accountNumber);
 		return creditService.getAvailableBalance(accountNumber);
+	}
+
+	@GetMapping("/dni/{dni}")
+	@ResponseStatus(HttpStatus.OK)
+	private Flux<Credit> findByDni(@PathVariable("dni") String dni) {
+		LOGGER.info("FindByDni dni: " + dni);
+		return creditService.findByDni(dni);
 	}
 }
