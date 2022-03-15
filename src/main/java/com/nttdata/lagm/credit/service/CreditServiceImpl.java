@@ -99,7 +99,7 @@ public class CreditServiceImpl implements CreditService {
 
 	private Mono<Void> checkCustomerExist(Credit credit) {
 		String customerId = credit.getCustomer().getId();
-		return customerProxy.findById(credit.getCustomer().getId())
+		return customerProxy.findById(customerId)
 				.switchIfEmpty(Mono.error(new Exception("No existe cliente con id: " + customerId)))
 				.flatMap(customer -> {
 					credit.setCustomer(customer);
