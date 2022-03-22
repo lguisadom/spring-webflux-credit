@@ -52,7 +52,6 @@ public class CreditServiceKafkaImpl implements CreditServiceKafka {
 
 	private Mono<Void> checkCustomerExist(Credit credit) {
 		String customerId = credit.getCustomer().getId();
-		customerKafkaProxy.sendId(customerId);
 		return customerKafkaProxy.findById(customerId)
 				.switchIfEmpty(Mono.error(new Exception("No existe cliente con id: " + customerId)))
 				.flatMap(customer -> {

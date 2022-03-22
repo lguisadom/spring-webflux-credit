@@ -1,5 +1,7 @@
 package com.nttdata.lagm.credit.kafka.proxy;
 
+import com.nttdata.lagm.credit.kafka.config.ReactiveKafkaProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,15 +10,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.nttdata.lagm.credit.kafka.service.ReactiveConsumerService;
-import com.nttdata.lagm.credit.kafka.service.ReactiveProducerService;
 import com.nttdata.lagm.credit.model.Customer;
 
 import reactor.core.publisher.Mono;
+import reactor.kafka.receiver.KafkaReceiver;
+import reactor.kafka.sender.KafkaSender;
+import reactor.kafka.sender.SenderRecord;
+
+import java.util.Collections;
 
 @Component
 public class CustomerKafkaProxyImpl implements CustomerKafkaProxy {
-	
+
+	@Autowired
+	private ReactiveKafkaProducerConfig reactiveKafkaProducerConfig;
+
 	private Logger LOGGER = LoggerFactory.getLogger(CustomerKafkaProxyImpl.class);
 	
 	@Value("${config-eureka.base.customer.endpoint}")
@@ -26,27 +34,12 @@ public class CustomerKafkaProxyImpl implements CustomerKafkaProxy {
 	@Qualifier("wcLoadBalanced")
 	private WebClient.Builder webClientBuilder;
 
-	@Autowired
-	private ReactiveConsumerService reactiveConsumerService;
-
-	@Autowired
-	private ReactiveProducerService reactiveProducerService;
-	
 	@Override
-	public Mono<Customer> findById(String id) {
-		return reactiveConsumerService.consumeCustomerId();
+	public void findById(String id) {
+		return reactiveKafkaProducerConfig.sender()
+				.send(Mono.just(new ProducerRecord<String, String>("customer.findById.id", id)))
+				.then()
+				.doOnError(e -> LOGGER.error("Send failed", e))
+				.subscribe();
 	}
-
-	@Override
-	public void sendId(String id) {
-		LOGGER.info("{} - findById: id={}", this.getClass().getSimpleName(), id);
-		reactiveProducerService.sendId(id);
-	}
-
-	/*@Override
-	public Mono<Customer> findByDni(String dni) {
-		reactiveProducerService.sendDni(dni);
-		return reactiveConsumerService.consumeCustomerDni();
-	}*/
-
 }

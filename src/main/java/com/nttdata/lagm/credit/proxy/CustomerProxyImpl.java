@@ -25,6 +25,9 @@ public class CustomerProxyImpl implements CustomerProxy {
 	@Qualifier("wcLoadBalanced")
 	private WebClient.Builder webClientBuilder;
 
+	private String sourceTopic = "";
+	private String destTopic = "";
+
 	@Override
 	public Flux<Customer> findAll() {
 		return webClientBuilder
