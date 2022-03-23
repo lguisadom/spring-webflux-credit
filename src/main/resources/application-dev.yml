@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: service-credit #(1)
+  cloud:
+    config:
+      profile: dev #(3) dev, qa, prod
+  config:
+    import: optional:configserver:http://localhost:8086 #(4)

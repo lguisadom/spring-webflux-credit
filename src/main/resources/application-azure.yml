@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: service-credit #(1)
+  cloud:
+    config:
+      profile: prod #(3) dev, qa, prod
+  config:
+    import: optional:configserver:https://bootcamp2022-ms-configserver.azurewebsites.net #(4)
